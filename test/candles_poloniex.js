@@ -13,13 +13,12 @@
  * Removal or modification of this copyright notice is prohibited.
  *
  */
-const config = require('./config');
-const client = require('./redis')(config);
-const candles = require('./lib/candles');
+const config = require('../config');
+const client = require('../redis')(config);
+const candles = require('../lib/candles');
 const async = require('async');
 
-
-
+/* eslint-disable no-console */
 /* eslint-disable wrap-iife */
 (function () {
 	async.series([
@@ -30,7 +29,7 @@ const async = require('async');
 				if (err) {
 					return callback(err);
 				}
-				// return callback(null, res);
+				return callback(null, res);
 			});
 		},
 	],
