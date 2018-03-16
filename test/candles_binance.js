@@ -42,6 +42,16 @@ const async = require('async');
 				return callback(null, res);
 			});
 		},
+		(callback) => {
+			const binance = new candles.binanceCandles(client, config.marketWatcher.candles.binance);
+
+			return binance.buildCandles((err, res) => {
+				if (err) {
+					return callback(err);
+				}
+				return callback(null, res);
+			});
+		},
 	],
 	(err) => {
 		if (err) {
