@@ -190,45 +190,21 @@
 		</div>
 	</div>
 	<div class="row" data-ng-if="vm.peers" data-ng-cloak>
-		<div class="col-xs-12 col-sm-12 big-info best-heights-block">
+		<div class="col-xs-4 col-sm-4 big-info best-heights-block">
 			<p class="small-title text-center">Best heights</p>
-
-			<div class="row heights">
-				<div class="col-xs-12">
-					<div class="height" data-ng-if="vm.counter.heights.heights[0]">
-						<p class="details-wrapper">
-							<span class="main-info best">{{vm.counter.heights.heights[0] || '~'}}</span>
-							<span class="counter peers">{{vm.counter.heights.counter[0] || 0}}</span>
-							<span class="counter percetage">{{vm.counter.percents[0] || 0}}%</span>
-						</p>
-					</div>
-					<div class="height" data-ng-if="vm.counter.heights.heights[1]">
-						<p class="details-wrapper">
-							<span class="main-info">{{vm.counter.heights.heights[1] || '~'}}</span>
-							<span class="counter peers">{{vm.counter.heights.counter[1] || 0}}</span>
-							<span class="counter percetage">{{vm.counter.percents[1] || 0}}%</span>
-						</p>
-					</div>
-					<div class="height" data-ng-if="vm.counter.heights.heights[2]">
-						<p class="details-wrapper">
-							<span class="main-info">{{vm.counter.heights.heights[2] || '~'}}</span>
-							<span class="counter peers">{{vm.counter.heights.counter[2] || 0}}</span>
-							<span class="counter percetage">{{vm.counter.percents[2] || 0}}%</span>
-						</p>
-					</div>
-					<div class="height" data-ng-if="vm.counter.heights.heights[3]">
-						<p class="details-wrapper">
-							<span class="main-info">{{vm.counter.heights.heights[3] || '~'}}</span>
-							<span class="counter peers">{{vm.counter.heights.counter[3] || 0}}</span>
-							<span class="counter percetage">{{vm.counter.percents[3] || 0}}%</span>
-						</p>
-					</div>
-				</div>
-			</div>
 			<div class="row">
-				<div class="col-xs-12">
-					<p class="text-muted text-center">{{vm.counter.heights.counter[4] || 0}} &bull; {{vm.counter.percents[4] || 0}}% Peers at other heights</p>
-				</div>
+				<table class="table table-striped">
+						<thead>
+							<th class="">Height</th>
+							<th class="text-right">No. of nodes</th>
+							<th class="text-right">% of nodes</th>
+						</thead>
+						<tr data-ng-repeat='v in vm.counter.heights.heights track by $index'>
+							<td class="">{{v}}</td>
+							<td class="text-right">{{vm.counter.heights.counter[$index]}}</td>
+							<td class="text-right">{{vm.counter.percents[$index]}}</td>
+						</tr>
+				</table>
 			</div>
 		</div>
 	</div>
