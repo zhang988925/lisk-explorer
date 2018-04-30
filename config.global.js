@@ -17,7 +17,6 @@ const config = {};
 config.lisk = {};
 config.freegeoip = {};
 config.redis = {};
-config.proposals = {};
 config.log = {};
 config.exchangeRates = {
 	exchanges: {
@@ -26,5 +25,6 @@ config.exchangeRates = {
 	},
 };
 config.marketWatcher = { exchanges: {}, candles: { poloniex: {} }, orders: {} };
+config.cacheDelegateAddress = {};
 
 module.exports = config;

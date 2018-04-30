@@ -24,21 +24,22 @@ config.port = 6040; // Port to listen on
 /**
  * LISK node
  */
-config.lisk.host = '127.0.0.1';
-config.lisk.port = 4000;
+config.lisk.host = process.env.LISK_HOST || '127.0.0.1';
+config.lisk.port = process.env.LISK_PORT || 4000;
+config.lisk.apiPath = '/api';
 
 /**
  * FreeGeoIP server
  */
-config.freegeoip.host = '127.0.0.1';
-config.freegeoip.port = 8080;
+config.freegeoip.host = process.env.FREEGEOIP_HOST || '127.0.0.1';
+config.freegeoip.port = process.env.FREEGEOIP_PORT || 8080;
 
 /**
  * Redis server
  */
-config.redis.host = '127.0.0.1';
-config.redis.port = 6379;
-config.redis.db = 0;
+config.redis.host = process.env.REDIS_HOST || '127.0.0.1';
+config.redis.port = process.env.REDIS_PORT || 6379;
+config.redis.db = process.env.REDIS_DB || 0;
 config.redis.password = '';
 
 // Time in seconds to store cache in Redis
@@ -90,11 +91,11 @@ config.marketWatcher.candles.poloniex.buildTimeframe = 60 * 60 * 24 * 30;
 config.marketWatcher.orders.updateInterval = 15000;
 
 /**
- * Delegate Proposals
+ * Cache delegate info in order to replace address by username
  */
-// Delegate proposals support (true - enabled, false - disabled)
-config.proposals.enabled = true;
-// Interval in ms for updating delegate proposals (default: 10 minutes)
-config.proposals.updateInterval = 600000;
+// Delegate caching support (true - enabled, false - disabled)
+config.cacheDelegateAddress.enabled = true;
+// Interval in ms for checking new delegates registration (default: 60 seconds)
+config.cacheDelegateAddress.updateInterval = 60000;
 
 module.exports = config;

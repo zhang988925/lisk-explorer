@@ -20,6 +20,8 @@ const params = {
 	address_delegate: '8273455169423958419L',
 	excessive_offset: '1000000',
 	publicKey: 'c094ebee7ec0c50ebee32918655e089f6e1a604b83bcaa760293c61e0f18ab6f',
+	addressWithVotes: '16313739661670634666L',
+	addressWithVoters: '6726252519465624456L',
 };
 
 describe('Accounts API', () => {
@@ -56,6 +58,20 @@ describe('Accounts API', () => {
 			'outgoing_cnt');
 	}
 
+	const checkDelegate = (id) => {
+		node.expect(id).to.contain.all.keys(
+			'address',
+			'approval',
+			'missedblocks',
+			'producedblocks',
+			'productivity',
+			'publicKey',
+			'rate',
+			'username',
+			'vote',
+			'forged');
+	};
+
 	const checkTopAccount = (id) => {
 		node.expect(id).to.have.all.keys(
 			'address',
@@ -78,6 +94,33 @@ describe('Accounts API', () => {
 			getAccount(params.address, (err, res) => {
 				node.expect(res.body).to.have.property('success').to.not.be.equal(undefined);
 				checkAccount(res.body);
+				done();
+			});
+		});
+
+		it('using delegate with 2 voters should return 2 voters', (done) => {
+			getAccount(params.address_delegate, (err, res) => {
+				node.expect(res.body).to.have.property('success').to.not.be.equal(undefined);
+				checkAccount(res.body);
+				node.expect(res.body.voters.length).to.be.equal(2);
+				done();
+			});
+		});
+
+		it('using address with 101 votes should return all 101 votes', (done) => {
+			getAccount(params.address, (err, res) => {
+				node.expect(res.body).to.have.property('success').to.not.be.equal(undefined);
+				checkAccount(res.body);
+				node.expect(res.body.votes.length).to.be.equal(101);
+				done();
+			});
+		});
+
+		it('using delgate address should return delegate data', (done) => {
+			getAccount(params.address_delegate, (err, res) => {
+				node.expect(res.body).to.have.property('success').to.be.equal(true);
+				checkAccount(res.body);
+				checkDelegate(res.body.delegate);
 				done();
 			});
 		});
@@ -137,6 +180,42 @@ describe('Accounts API', () => {
 				done();
 			});
 		});
+
+		it('the response should have votes', (done) => {
+			getAccount(params.addressWithVotes, (err, res) => {
+				node.expect(res.body).to.have.property('success').to.not.be.equal(undefined);
+				checkAccount(res.body);
+				node.expect(res.body.votes).to.have.lengthOf(101);
+				const checkVotes = (o) => {
+					node.expect(o).to.have.all.keys(
+						'address',
+						'balance',
+						'knowledge',
+						'publicKey',
+						'username');
+					node.expect(o.knowledge).to.be.an('object');
+				};
+				res.body.votes.map(checkVotes);
+				done();
+			});
+		});
+
+		it('the response should have voters', (done) => {
+			getAccount(params.addressWithVoters, (err, res) => {
+				node.expect(res.body).to.have.property('success').to.not.be.equal(undefined);
+				checkAccount(res.body);
+				node.expect(res.body.voters).to.have.lengthOf(2);
+				const checkVoters = (o) => {
+					node.expect(o).to.have.all.keys(
+						'address',
+						'balance',
+						'knowledge',
+						'publicKey');
+				};
+				res.body.voters.map(checkVoters);
+				done();
+			});
+		});
 	});
 
 	/* -- if all fail, check lisk for topAccounts = true */
@@ -190,6 +269,33 @@ describe('Accounts API', () => {
 			getTopAccounts(params.excessive_offset, '', (err, res) => {
 				node.expect(res.body).to.have.property('success').to.be.equal(true);
 				node.expect(res.body.accounts.length).to.equal(0);
+				done();
+			});
+		});
+
+		it('unknown addresses should NOT have owner property', (done) => {
+			getTopAccounts('0', '1', (err, res) => {
+				node.expect(res.body).to.have.property('success').to.be.equal(true);
+				node.expect(res.body.accounts[0]).to.have.property('knowledge').to.be.equal(null);
+				done();
+			});
+		});
+
+		it('delegate addresses should have owner property', (done) => {
+			getTopAccounts('1', '1', (err, res) => {
+				node.expect(res.body).to.have.property('success').to.be.equal(true);
+				node.expect(res.body.accounts[0]).to.have.property('knowledge');
+				node.expect(res.body.accounts[0].knowledge).to.have.property('owner');
+				done();
+			});
+		});
+
+		it('known addresses should have owner and description property', (done) => {
+			getTopAccounts('2', '1', (err, res) => {
+				node.expect(res.body).to.have.property('success').to.be.equal(true);
+				node.expect(res.body.accounts[0]).to.have.property('knowledge');
+				node.expect(res.body.accounts[0].knowledge).to.have.property('owner');
+				node.expect(res.body.accounts[0].knowledge).to.have.property('description');
 				done();
 			});
 		});

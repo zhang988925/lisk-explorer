@@ -12,13 +12,14 @@ if [ ! -f blockchain_explorer.db.gz ]; then
 fi
 
 pwd=`pwd`
-cp test/config_lisk.json $1/config.json
+cp ./test/known.test.json ./known.json
 cd $1
+cp test/data/config.json ./config.json
 pm2 stop app.js
 dropdb lisk_test
 createdb lisk_test
 gunzip -fcq "$pwd/blockchain_explorer.db.gz" | psql -d lisk_test
-cp test/genesisBlock.json ./
+cp test/data/genesis_block.json ./
 pm2 start app.js --name=lisk-core
 sleep 5
 cd -

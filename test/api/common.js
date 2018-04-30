@@ -46,7 +46,7 @@ describe('Common API', () => {
 		});
 	});
 
-	describe('GET /api/getPriceTicker', () => {
+	describe.skip('GET /api/getPriceTicker', () => {
 		it('should be ok', (done) => {
 			getPriceTicker((err, res) => {
 				node.expect(res.body).to.have.property('success').to.be.equal(true);
@@ -104,10 +104,12 @@ describe('Common API', () => {
 		});
 
 		it('using partial known delegate should be ok', (done) => {
-			getSearch('gene', (err, res) => {
+			const partialName = 'gene';
+			getSearch(partialName, (err, res) => {
 				node.expect(res.body).to.have.property('success').to.be.equal(true);
 				node.expect(res.body.result.type).to.equal('delegate');
-				node.expect(res.body.result.delegates[0].address).to.equal(params.address);
+				res.body.result.delegates.map(delegate =>
+					node.expect(delegate.username).to.have.string(partialName));
 				done();
 			});
 		});

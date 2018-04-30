@@ -1,7 +1,7 @@
 pipeline {
 	agent { node { label 'lisk-explorer' } } 
 	environment { 
-		LISK_VERSION = '0.9.12a'
+		LISK_VERSION = '1.0.0-alpha.3'
 		//
 		EXPLORER_PORT = "604$EXECUTOR_NUMBER"
 		LISK_HOST = 'localhost'
@@ -28,7 +28,8 @@ pipeline {
 			steps {
 				// marketwatcher needs to be enabled to builds candles
 				sh '''
-				cp test/config.test ./config.js
+				cp ./test/known.test.json ./known.json
+				redis-cli -n $REDIS_DB flushdb
 				grunt candles:build
 				'''
 			}
@@ -48,7 +49,7 @@ pipeline {
 						docker-compose config
 						docker-compose ps
 						'''
-						// temp.
+						// Explorer needs the topAccounts feature to be enabled
 						sh '''
 						docker-compose exec -T lisk sed -i -r -e 's/(\\s*"topAccounts":)\\s*false,/\\1 true,/' config.json
 						docker-compose restart lisk
@@ -63,7 +64,7 @@ pipeline {
 				cd $WORKSPACE/$BRANCH_NAME
 				LISK_PORT=$( docker-compose port lisk 4000 |cut -d ":" -f 2 )
 				cd -
-				LISK_PORT=$LISK_PORT node app.js -c config.docker.js -p $EXPLORER_PORT &>/dev/null &
+				LISK_PORT=$LISK_PORT node app.js -p $EXPLORER_PORT &>/dev/null &
 				sleep 20
 				'''
 			}
@@ -86,6 +87,9 @@ pipeline {
 				}
 			}
 			archiveArtifacts artifacts: 'logs/*.log', allowEmptyArchive: true
+			dir('logs') {
+				deleteDir()
+			}
 		}
 	}
 }

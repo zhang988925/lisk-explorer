@@ -17,7 +17,7 @@ const node = require('./../node.js');
 
 const params = {
 	publicKey: '9d3058175acab969f41ad9b86f7a2926c74258670fe56b37c429c01fca9f2f0f',
-	noBlocksKey: '1111111111111111111111111111111111111111111111111111111111111111',
+	noBlocksKey: '968ba2fa993ea9dc27ed740da0daf49eddd740dbd7cb1cb4fc5db3a20baf341b',
 	invalidPublicKey: 'abdefghijklmnopqrstuvwyxz',
 	delegate: 'genesis_1',
 	address: '8273455169423958419L',
@@ -53,10 +53,6 @@ describe('Delegates API', () => {
 
 	const getNextForgers = (done) => {
 		node.get('/api/delegates/getNextForgers', done);
-	};
-
-	const getDelegateProposals = (done) => {
-		node.get('/api/delegates/getDelegateProposals', done);
 	};
 
 	const checkBlock = (id) => {
@@ -105,17 +101,6 @@ describe('Delegates API', () => {
 		for (let i = 0; i < id.length; i++) {
 			if (id[i + 1]) {
 				checkDelegate(id[i]);
-			}
-		}
-	};
-
-	const checkDelegateProposals = (id) => {
-		for (let i = 0; i < id.length; i++) {
-			if (id[i + 1]) {
-				node.expect(id[i]).to.contain.all.keys(
-					'topic',
-					'name',
-					'description');
 			}
 		}
 	};
@@ -298,10 +283,10 @@ describe('Delegates API', () => {
 			});
 		});
 
-		it.skip('using invalid publickey should fail', (done) => {
+		it('using invalid publickey should fail', (done) => {
 			getLastBlocks(params.invalidPublicKey, '', (err, res) => {
 				node.expect(res.body).to.have.property('success').to.be.equal(false);
-				node.expect(res.body).to.have.property('blocks');
+				node.expect(res.body).to.have.property('error');
 				done();
 			});
 		});
@@ -352,18 +337,5 @@ describe('Delegates API', () => {
 				done();
 			});
 		});
-	});
-
-	/* This is pending until getDelegateProposals is implemented */
-	describe.skip('GET /api/delegates/getDelegateProposals', () => {
-		it('should be ok', (done) => {
-			getDelegateProposals((err, res) => {
-				node.expect(res.body).to.have.property('success').to.be.equal(true);
-				node.expect(res.body).to.have.property('proposals');
-				node.expect(res.body).to.have.property('count');
-				checkDelegateProposals(res.body.proposals);
-				done();
-			});
-		}).timeout(10000);
 	});
 });
