@@ -49,6 +49,7 @@ import '../components/home';
 import '../components/bread-crumb';
 import '../components/market-watcher';
 import '../components/network-monitor';
+import '../components/network-status';
 
 import '../filters';
 import '../services';
@@ -80,6 +81,7 @@ const App = angular.module('lisk_explorer', [
 	'lisk_explorer.delegateMonitor',
 	'lisk_explorer.home',
 	'lisk_explorer.networkMonitor',
+	'lisk_explorer.networkStatus',
 	'lisk_explorer.marketWatcher',
 ]);
 

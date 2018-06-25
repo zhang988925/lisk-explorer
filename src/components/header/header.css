@@ -200,14 +200,15 @@
   font-family: Open Sans, sans-serif;
 }
 
-.navbar-fixed-top .network-status {
+.network-status {
   width: 100%;
   position: relative;
   z-index: 1;
-  background-color: rgb(1, 56, 115);
+	background-color: rgb(1, 56, 115);
+	padding-top: 115px;
 }
 
-.navbar-fixed-top .network-status .flex-container {
+.network-status .flex-container {
   background: rgb(1, 56, 115);
   padding: 8px 12px;
   border-radius: 0 0 3px 3px;
@@ -219,17 +220,44 @@
   justify-content: space-between;
 }
 
+.navbar-fixed-top .navigation-links {
+	width: 100%;
+  position: relative;
+  z-index: 1;
+  background-color: black;
+}
+
+.navbar-fixed-top .navigation-links .flex-container {
+  background: black;
+  padding: 8px 12px;
+  border-radius: 0 0 3px 3px;
+  margin: 0;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  flex: 0 1 auto;
+  justify-content: space-between;
+}
+
+.navigation-links a {
+	color: rgb(185, 185, 185);
+}
+
+.navigation-links a:hover {
+	color: white;
+}
+
 .navbar-fixed-top .main-header {
   background: #002449;
   position: relative;
   z-index: 2;
 }
 
-.navbar-fixed-top .network-status .container {
+.network-status .container {
    display: table;
  }
 
-.navbar-fixed-top .network-status span {
+.network-status span {
   color: #ccc;
   line-height: 24px;
   width: auto;
@@ -237,19 +265,19 @@
 }
 
 @media (max-width: 768px) {
-  .navbar-fixed-top  .network-status .container {
+  .network-status .container {
     display: block;
   }
 
-  .navbar-fixed-top  .network-status .container .flex-container {
+  .network-status .container .flex-container {
     padding: 8px 12px;
   }
 
-  .navbar-fixed-top  .network-status .container span {
+  .network-status .container span {
     width: 50%;
   }
 
-  .navbar-fixed-top  .network-status .container span:nth-child(even) {
+  .network-status .container span:nth-child(even) {
     text-align: right;
   }
 }
