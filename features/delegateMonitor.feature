@@ -2,21 +2,21 @@ Feature: Delegate Monitor
   Scenario: should show delegates, last block, next forgers, ...
     Given I'm on page "/delegateMonitor"
     Then I should see table "votes" containing:
-      | Voter          | Transaction          | Time              |
-      |----------------|----------------------|-------------------|
+      | Voter          | Transaction          | Time               |
+      |----------------|----------------------|--------------------|
       | standby_301    | 11267727202420741572 | /(\d+\|a) \w+ ago/ |
-      | gottavoteemall | 15390378815021944871 | /(\d+\|a) \w+ ago/ |
+      | gottavoteemall | 1783506800230512638  | /(\d+\|a) \w+ ago/ |
       | gottavoteemall | 18294919898268153226 | /(\d+\|a) \w+ ago/ |
+      | gottavoteemall | 15390378815021944871 | /(\d+\|a) \w+ ago/ |
       | gottavoteemall | 9211700107174373690  | /(\d+\|a) \w+ ago/ |
-      | standby_301    | 11200707554079032663 | /(\d+\|a) \w+ ago/ |
     And I should see table "registrations" containing:
-      | Delegate          | Transaction          | Time              |
-      |-------------------|----------------------|-------------------|
+      | Delegate          | Transaction          | Time               |
+      |-------------------|----------------------|--------------------|
       | gottavoteemall    | 2535943083975103126  | /(\d+\|a) \w+ ago/ |
-      | /standby_\d{1,3}/ | 16715526910305817229 | /(\d+\|a) \w+ ago/ |
-      | /standby_\d{1,3}/ | 4154808905851929406  | /(\d+\|a) \w+ ago/ |
-      | /standby_\d{1,3}/ | 13937166171748984472 | /(\d+\|a) \w+ ago/ |
-      | /standby_\d{1,3}/ | 7779164661594604013  | /(\d+\|a) \w+ ago/ |
+      | /standby_\d{1,3}/ | 7725033441202232644  | /(\d+\|a) \w+ ago/ |
+      | /standby_\d{1,3}/ | 3583899729925812364  | /(\d+\|a) \w+ ago/ |
+      | /standby_\d{1,3}/ | 3386192543309483526  | /(\d+\|a) \w+ ago/ |
+      | /standby_\d{1,3}/ | 15815137583175771288 | /(\d+\|a) \w+ ago/ |
     And I should see "Home Delegate Monitor" in "breadcrumb" element
     And I should see "delegates" element with content that matches:
       """
@@ -41,7 +41,7 @@ Feature: Delegate Monitor
     And I should see "total forged" element with content that matches:
       """
       TOTAL FORGED \(LSK\)
-      \d{1,3},\d{3}\.\d{8}
+      ~\d{1,3},\d{3}\
       between 101 active delegates
       """
     And I should see "best forger" element with content that matches:
@@ -134,7 +134,7 @@ Feature: Delegate Monitor
   Scenario: allows to go to next page of standby delegates
     Given I'm on page "/delegateMonitor"
     When I click "standby delegates tab"
-    And I click "next page button"
+    And I click "more button"
     Then I should see table "standby delegates" with 20 rows starting with:
       | Rank | Name              | Address      | Productivity | Approval |
       |------|-------------------|--------------|--------------|----------|
@@ -147,8 +147,9 @@ Feature: Delegate Monitor
   Scenario: allows to go to previous page of standby delegates
     Given I'm on page "/delegateMonitor"
     When I click "standby delegates tab"
-    And I click "next page button"
-    And I click "previous page button"
+    And I click "more button"
+    And I wait 0.5 seconds
+    And I click "less button"
     Then I should see table "standby delegates" with 20 rows starting with:
       | Rank | Name              | Address      | Productivity | Approval |
       |------|-------------------|--------------|--------------|----------|

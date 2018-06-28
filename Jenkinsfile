@@ -1,30 +1,9 @@
-def get_build_info() {
-	pr_branch = ''
-	if (env.CHANGE_BRANCH != null) {
-		pr_branch = " (${env.CHANGE_BRANCH})"
-	}
-	build_info = "#${env.BUILD_NUMBER} of <${env.BUILD_URL}|${env.JOB_NAME}>${pr_branch}"
-	return build_info
-}
-
-def slack_send(color, message) {
-	/* Slack channel names are limited to 21 characters */
-	CHANNEL_MAX_LEN = 21
-
-	channel = "${env.JOB_NAME}".tokenize('/')[0]
-	channel = channel.replace('lisk-', 'lisk-ci-')
-	if ( channel.size() > CHANNEL_MAX_LEN ) {
-		 channel = channel.substring(0, CHANNEL_MAX_LEN)
-	}
-
-	echo "[slack_send] channel: ${channel} "
-	slackSend color: "${color}", message: "${message}", channel: "${channel}"
-}
+@Library('lisk-jenkins') _
 
 pipeline {
-	agent { node { label 'lisk-explorer' } } 
+	agent { node { label 'lisk-explorer' } }
 	environment {
-		LISK_VERSION = '1.0.0-beta.7'
+		LISK_VERSION = '1.0.0-beta.9.2'
 		EXPLORER_PORT = "604$EXECUTOR_NUMBER"
 		LISK_HOST = 'localhost'
 		REDIS_DB = "$EXECUTOR_NUMBER"
@@ -91,7 +70,7 @@ pipeline {
 				'''
 			}
 		}
-		stage ('Run tests') {
+		stage ('Run API tests') {
 			steps {
 				sh '''
 				sed -i -r -e "s/6040/$EXPLORER_PORT/" test/node.js
@@ -99,6 +78,15 @@ pipeline {
 				'''
 			}
 		}
+		// stage ('Run E2E tests') {
+		// 	steps {
+		// 		wrap([$class: 'Xvfb']) {
+		// 			sh '''
+		// 			npm run e2e -- --params.baseURL http://localhost:$EXPLORER_PORT
+		// 			'''
+		// 		}
+		// 	}
+		// }
 	}
 	post {
 		success {
@@ -106,16 +94,16 @@ pipeline {
 				if (currentBuild.result == null || currentBuild.result == 'SUCCESS') {
 					previous_build = currentBuild.getPreviousBuild()
 					if (previous_build != null && previous_build.result == 'FAILURE') {
-						build_info = get_build_info()
-						slack_send('good', "Recovery: build ${build_info} was successful.")
+						build_info = getBuildInfo()
+						liskSlackSend('good', "Recovery: build ${build_info} was successful.")
 					}
 				}
 			}
 		}
 		failure {
 			script {
-				build_info = get_build_info()
-				slack_send('danger', "Build ${build_info} failed (<${env.BUILD_URL}/console|console>, <${env.BUILD_URL}/changes|changes>)\n")
+				build_info = getBuildInfo()
+				liskSlackSend('danger', "Build ${build_info} failed (<${env.BUILD_URL}/console|console>, <${env.BUILD_URL}/changes|changes>)\n")
 			}
 		}
 		always {
@@ -125,6 +113,9 @@ pipeline {
 					sh 'make mrproper'
 				}
 			}
+
+			junit 'xunit-report.xml'
+
 			archiveArtifacts artifacts: 'logs/*.log', allowEmptyArchive: true
 			dir('logs') {
 				deleteDir()
