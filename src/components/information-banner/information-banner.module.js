@@ -13,19 +13,8 @@
  * Removal or modification of this copyright notice is prohibited.
  *
  */
-module.exports = [
-	{
-		path: 'getPriceTicker',
-		service: '',
-		params: () => undefined,
-	}, {
-		path: 'search',
-		service: '',
-		params: req => req.query.id,
-	},
-	{
-		path: 'ui_message',
-		service: '',
-		params: () => undefined,
-	},
-];
+import angular from 'angular';
+
+const InformationBanner = angular.module('lisk_explorer.infoBanner', ['ngSanitize']);
+
+export default InformationBanner;

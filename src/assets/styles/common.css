@@ -805,6 +805,26 @@ qrcode + span {
 	padding: 6px;
 }
 
+/* information banner */
+.information-banner {
+	position: relative;
+	top: 120px;
+	width: 100%;
+	min-height: 50px;
+	padding: 8px 12px;
+	z-index: 1;
+	background: rgb(218, 206, 0);
+}
+
+.information-banner .information-text-container {
+	padding: 12px 12px;
+}
+
+.information-banner p {
+	margin: 0 0;
+}
+
+
 /* progress bar */
 .progress {
   background-color: transparent;

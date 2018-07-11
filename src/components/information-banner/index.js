@@ -13,19 +13,5 @@
  * Removal or modification of this copyright notice is prohibited.
  *
  */
-module.exports = [
-	{
-		path: 'getPriceTicker',
-		service: '',
-		params: () => undefined,
-	}, {
-		path: 'search',
-		service: '',
-		params: req => req.query.id,
-	},
-	{
-		path: 'ui_message',
-		service: '',
-		params: () => undefined,
-	},
-];
+import './information-banner.module';
+import './information-banner.directive';

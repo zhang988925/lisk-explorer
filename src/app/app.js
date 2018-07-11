@@ -21,7 +21,7 @@ import 'angular-ui-bootstrap';
 import 'angular-gettext';
 import 'angular-advanced-searchbox';
 import 'angular-cookies';
-// import 'babel-polyfill';
+import 'angular-sanitize';
 
 // styles
 import 'amstock3/amcharts/style.css';
@@ -53,6 +53,7 @@ import '../components/bread-crumb';
 import '../components/market-watcher';
 import '../components/network-monitor';
 import '../components/cookies-banner';
+import '../components/information-banner';
 
 import '../filters';
 import '../services';
@@ -64,6 +65,7 @@ const App = angular.module('lisk_explorer', [
 	'ngAnimate',
 	'ngResource',
 	'ngCookies',
+	'ngSanitize',
 	'ui.router',
 	'ui.bootstrap',
 	'gettext',
@@ -89,6 +91,7 @@ const App = angular.module('lisk_explorer', [
 	'lisk_explorer.networkMonitor',
 	'lisk_explorer.marketWatcher',
 	'lisk_explorer.cookiesBanner',
+	'lisk_explorer.infoBanner',
 ]);
 
 export default App;
