@@ -20,7 +20,8 @@ import 'angular-animate';
 import 'angular-ui-bootstrap';
 import 'angular-gettext';
 import 'angular-advanced-searchbox';
-// import 'babel-polyfill';
+import 'angular-sanitize';
+import 'angular-cookies';
 
 // styles
 import 'amstock3/amcharts/style.css';
@@ -44,11 +45,15 @@ import '../components/search';
 import '../components/header';
 import '../components/footer';
 import '../components/currency-selector';
+import '../components/navigation-dropdown';
+import '../components/rounding-selector';
 import '../components/activity-graph';
 import '../components/home';
 import '../components/bread-crumb';
 import '../components/market-watcher';
 import '../components/network-monitor';
+import '../components/information-banner';
+import '../components/cookies-banner';
 
 import '../filters';
 import '../services';
@@ -59,6 +64,8 @@ import '../shared';
 const App = angular.module('lisk_explorer', [
 	'ngAnimate',
 	'ngResource',
+	'ngSanitize',
+	'ngCookies',
 	'ui.router',
 	'ui.bootstrap',
 	'gettext',
@@ -76,11 +83,15 @@ const App = angular.module('lisk_explorer', [
 	'lisk_explorer.search',
 	'lisk_explorer.tools',
 	'lisk_explorer.currency',
+	'lisk_explorer.navDropdown',
+	'lisk_explorer.roundingMenu',
 	'lisk_explorer.activityGraph',
 	'lisk_explorer.delegateMonitor',
 	'lisk_explorer.home',
 	'lisk_explorer.networkMonitor',
 	'lisk_explorer.marketWatcher',
+	'lisk_explorer.infoBanner',
+	'lisk_explorer.cookiesBanner',
 ]);
 
 export default App;

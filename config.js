@@ -16,6 +16,13 @@
 const config = require('./config.global');
 
 /**
+ * Frontend UI Message
+ */
+config.uiMessage.text = process.env.UI_MESSAGE || '';
+config.uiMessage.start = process.env.UI_MESSAGE_START || ''; // optional, ISO Date-Time ex. '2018-07-11T15:01:00+02:00'
+config.uiMessage.end = process.env.UI_MESSAGE_END || ''; // optional, ISO Date-Time ex. '2018-07-11T15:01:00+02:00'
+
+/**
  * CONFIGURATION
  */
 config.host = '0.0.0.0'; // Interface to listen on, 0.0.0.0 to listen on all available
@@ -63,16 +70,20 @@ config.exchangeRates.updateInterval = 30000;
 // Configuration for different currency pairs, set false to disable pair
 // LSK/BTC pair, supported: poloniex
 config.exchangeRates.exchanges.LSK.BTC = 'poloniex';
-// LSK/CNY pair, supported: jubi, bitbays
-config.exchangeRates.exchanges.LSK.CNY = 'jubi';
 // BTC/USD pair, supported: bitfinex, bitstamp, btce
 config.exchangeRates.exchanges.BTC.USD = 'bitfinex';
 // BTC/EUR pair, supported: bitstamp, bitmarket
 config.exchangeRates.exchanges.BTC.EUR = 'bitstamp';
 // BTC/RUB pair, supported: btce, exmo
 config.exchangeRates.exchanges.BTC.RUB = 'btce';
-// BTC/PLN pair, supported: bitmarket
-config.exchangeRates.exchanges.BTC.PLN = false;
+// BTC/PLN pair, supported: bitmarket, bitbay
+config.exchangeRates.exchanges.BTC.PLN = 'bitmarket';
+// BTC/JPY pair, supported: coincheck
+config.exchangeRates.exchanges.BTC.JPY = 'coincheck';
+// BTC/GBP pair, supported: coinbase
+config.exchangeRates.exchanges.BTC.GBP = 'coinbase';
+// BTC/CNY pair, supported: 1btcxe, coinmarketcap
+config.exchangeRates.exchanges.BTC.CNY = '1btcxe';
 
 /**
  * Market watcher

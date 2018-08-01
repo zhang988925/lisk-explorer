@@ -15,7 +15,7 @@
  */
 const node = require('./../node.js');
 
-describe.skip('Exchanges API (Market Watcher)', () => {
+describe('Exchanges API (Market Watcher)', () => {
 	/* Define functions for use within tests */
 	function getExchanges(done) {
 		node.get('/api/exchanges', done);
@@ -31,17 +31,15 @@ describe.skip('Exchanges API (Market Watcher)', () => {
 
 	function checkCandles(id) {
 		for (let i = 0; i < id.length; i++) {
-			if (id[i + 1]) {
-				node.expect(id[i]).to.contain.all.keys(
-					'timestamp',
-					'date',
-					'high',
-					'low',
-					'open',
-					'close',
-					'liskVolume',
-					'btcVolume');
-			}
+			node.expect(id[i]).to.contain.all.keys(
+				'timestamp',
+				'date',
+				'high',
+				'low',
+				'open',
+				'close',
+				'liskVolume',
+				'btcVolume');
 		}
 	}
 
@@ -51,22 +49,18 @@ describe.skip('Exchanges API (Market Watcher)', () => {
 
 	function checkOrders(id) {
 		for (let i = 0; i < id.length; i++) {
-			if (id[i + 1]) {
-				node.expect(id[i]).to.have.all.keys(
-					'ask',
-					'bid',
-					'price',
-					'amount');
-			}
+			node.expect(id[i]).to.have.all.keys(
+				'ask',
+				'bid',
+				'price',
+				'amount');
 		}
 	}
 
 	function checkValues(id) {
 		for (let i = 0; i < id.length; i++) {
-			if (id[i + 1]) {
-				node.expect(typeof id[i][0]).to.be.equal('number');
-				node.expect(typeof id[i][1]).to.be.equal('number');
-			}
+			node.expect(typeof id[i][0]).to.be.equal('number');
+			node.expect(typeof id[i][1]).to.be.equal('number');
 		}
 	}
 
