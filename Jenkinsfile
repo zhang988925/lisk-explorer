@@ -9,7 +9,11 @@ pipeline {
 	stages {
 		stage ('Build dependencies') {
 			steps {
-				sh 'npm install'
+				script {
+					cache_file = restoreCache("package.json")
+					sh 'npm install'
+					saveCache(cache_file, './node_modules', 10)
+				}
 			}
 		}
 		stage ('Run ESLint') {
